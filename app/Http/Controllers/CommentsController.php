@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Repositories\ICommentsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -28,9 +29,18 @@ class CommentsController extends Controller
         }
     }
 
+
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), ['username' => 'required', 'content' => 'required']);
+
+        if ($request->comment_id) {
+            $maxDepth = $this->repo->exceedMaxDepth(intval($request->comment_id));
+            if ($maxDepth) {
+                return response()->json(['error' => 'Max reply count exceeded!'], 500);
+            }
+        }
 
         if ($validator->fails()) {
             $messages = Arr::flatten($validator->errors()->toArray());

@@ -42,7 +42,6 @@ export default function CommentForm() {
 		e.preventDefault();
 		setLoading(true);
 		setIsSubmitting(true);
-		console.log(state);
 		fetch(`${config().apiUrl}/comments/store`, {
 			method: "POST",
 			headers: {
@@ -51,11 +50,17 @@ export default function CommentForm() {
 			body: JSON.stringify(state)
 		}).then((response) => response.json())
 			.then((response => {
+				if ("error" in response) {
+					throw new Error(response.error);
+				}
 				getComments();
-				resetForm();
+
 			}))
-			.catch((error) => { setError(error) })
+			.catch((error) => {
+				setError(error.message)
+			})
 			.finally(() => {
+				resetForm();
 				setLoading(false);
 				setIsSubmitting(false);
 			})

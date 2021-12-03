@@ -5537,7 +5537,6 @@ function CommentForm() {
     e.preventDefault();
     setLoading(true);
     setIsSubmitting(true);
-    console.log(state);
     fetch("".concat((0,_helpers_config__WEBPACK_IMPORTED_MODULE_1__["default"])().apiUrl, "/comments/store"), {
       method: "POST",
       headers: {
@@ -5547,11 +5546,15 @@ function CommentForm() {
     }).then(function (response) {
       return response.json();
     }).then(function (response) {
+      if ("error" in response) {
+        throw new Error(response.error);
+      }
+
       getComments();
-      resetForm();
     })["catch"](function (error) {
-      setError(error);
+      setError(error.message);
     })["finally"](function () {
+      resetForm();
       setLoading(false);
       setIsSubmitting(false);
     });
@@ -5662,17 +5665,14 @@ var CommentList = function CommentList(_ref) {
       loading = _ref$loading === void 0 ? false : _ref$loading,
       _ref$handleReply = _ref.handleReply,
       handleReply = _ref$handleReply === void 0 ? function () {} : _ref$handleReply;
+  var nested = 1;
 
   var renderComment = function renderComment(comment) {
-    var nested = 1;
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_0__["default"], {
         comment: comment,
-        handleReply: handleReply,
-        showReply: nested < 3
+        handleReply: handleReply
       }), comment.replies.map(function (c) {
-        nested++;
-        console.log(nested);
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
           className: "pl-2",
           children: [" ", renderComment(c)]
