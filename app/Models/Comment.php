@@ -9,5 +9,24 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["username", "comment"];
+    protected $fillable = ["username", "comment", "comment_id"];
+
+    protected $appends = ["replies"];
+
+    public function getRepliesAttribute()
+    {
+        return $this->replies()->get();
+    }
+
+    // a comment has many replies
+    public function replies()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // a reply belongs to one comment
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
 }

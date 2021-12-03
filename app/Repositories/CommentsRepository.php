@@ -18,6 +18,6 @@ class CommentsRepository extends BaseRepository implements ICommentsRepository
 
 	public function getCommentsByDesc()
 	{
-		return $this->model->orderBy('id', 'DESC');
+		return $this->model->where('comment_id', null)->orderBy('id', 'DESC');
 	}
 }
