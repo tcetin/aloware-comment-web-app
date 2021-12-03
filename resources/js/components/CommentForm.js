@@ -8,7 +8,7 @@ const fakeContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ve
 
 export default function CommentForm() {
 	const [error, setError] = React.useState("");
-	const [state, setState] = React.useState({ username: "", comment: "", comment_id: null });
+	const [state, setState] = React.useState({ username: "", content: "", comment_id: null });
 	const [loading, setLoading] = React.useState(false);
 	const [blogPost, setBlogPost] = React.useState({ title: "Blog Post Title", content: fakeContent, })
 	const [comments, setComments] = useState([]);
@@ -30,7 +30,7 @@ export default function CommentForm() {
 	}
 
 	const resetForm = () => {
-		setState({ username: "", comment: "", comment_id: null });
+		setState({ username: "", content: "", comment_id: null });
 		setBlogPost({ title: "Blog Post Title", content: fakeContent });
 	}
 
@@ -83,7 +83,7 @@ export default function CommentForm() {
 				{error && <p className="text-md font-bold text-red-600">{error}</p>}
 				<form className="flex flex-col space-y-4 justify-start mt-4" onSubmit={handleSubmit}>
 					<input type="text" name="username" value={state.username} disabled={isSubmitting} placeholder="Please enter your user name." className="p-2 border-2 border-gray-400 text-md font-bold" onChange={handleChange} required />
-					<textarea rows="4" name="comment" value={state.comment} disabled={isSubmitting} cols="10" placeholder="Please enter your comment." className="p-2 border-2 border-gray-400 text-md font-bold" onChange={handleChange} required />
+					<textarea rows="4" name="content" value={state.content} disabled={isSubmitting} cols="10" placeholder="Please enter your comment." className="p-2 border-2 border-gray-400 text-md font-bold" onChange={handleChange} required />
 					<div className="flex justify-end">
 						<button type="submit" disabled={isSubmitting} className="w-48 p-2 bg-green-400 text-white font-bold border-gray-400">Submit Comment</button>
 					</div>

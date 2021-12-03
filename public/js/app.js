@@ -5369,7 +5369,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-var _excluded = ["comment", "handleReply", "className"];
+var _excluded = ["comment", "handleReply", "className", "showReply"];
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -5390,6 +5390,8 @@ function Comment(_ref) {
       _ref$handleReply = _ref.handleReply,
       handleReply = _ref$handleReply === void 0 ? function () {} : _ref$handleReply,
       className = _ref.className,
+      _ref$showReply = _ref.showReply,
+      showReply = _ref$showReply === void 0 ? true : _ref$showReply,
       other = _objectWithoutProperties(_ref, _excluded);
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
@@ -5398,11 +5400,11 @@ function Comment(_ref) {
     }, other), {}, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
         className: "text-sm text-gray-500",
-        children: [comment.comment, " ", " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+        children: [comment.content, " ", " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
           className: "text-sm font-bold text-gray-600 underline",
           children: comment.username
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      }), showReply && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
         className: "flex justify-end",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
           className: "text-sm font-bold text-blue-500 cursor-pointer",
@@ -5467,7 +5469,7 @@ function CommentForm() {
 
   var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0__.useState({
     username: "",
-    comment: "",
+    content: "",
     comment_id: null
   }),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
@@ -5518,7 +5520,7 @@ function CommentForm() {
   var resetForm = function resetForm() {
     setState({
       username: "",
-      comment: "",
+      content: "",
       comment_id: null
     });
     setBlogPost({
@@ -5609,8 +5611,8 @@ function CommentForm() {
           required: true
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("textarea", {
           rows: "4",
-          name: "comment",
-          value: state.comment,
+          name: "content",
+          value: state.content,
           disabled: isSubmitting,
           cols: "10",
           placeholder: "Please enter your comment.",
@@ -5662,15 +5664,19 @@ var CommentList = function CommentList(_ref) {
       handleReply = _ref$handleReply === void 0 ? function () {} : _ref$handleReply;
 
   var renderComment = function renderComment(comment) {
+    var nested = 1;
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_Comment__WEBPACK_IMPORTED_MODULE_0__["default"], {
         comment: comment,
-        handleReply: handleReply
+        handleReply: handleReply,
+        showReply: nested < 3
       }), comment.replies.map(function (c) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-          className: "px-2",
-          children: renderComment(c)
-        });
+        nested++;
+        console.log(nested);
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+          className: "pl-2",
+          children: [" ", renderComment(c)]
+        }, c.id);
       })]
     }, comment.id);
   };

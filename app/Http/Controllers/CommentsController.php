@@ -30,7 +30,7 @@ class CommentsController extends Controller
 
     public function create(Request $request)
     {
-        $validator = Validator::make($request->all(), ['username' => 'required', 'comment' => 'required']);
+        $validator = Validator::make($request->all(), ['username' => 'required', 'content' => 'required']);
 
         if ($validator->fails()) {
             $messages = Arr::flatten($validator->errors()->toArray());
